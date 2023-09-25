@@ -498,7 +498,7 @@ class Ticket extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
-    public function filtrar_ticket()
+    public function filtrar_ticket($modalidad_id)
     {
         $conectar = parent::conexion();
         parent::set_names();
@@ -520,8 +520,7 @@ class Ticket extends Conectar
             tm_ticket
             INNER join tm_usuario on tm_ticket.usu_id = tm_usuario.usu_id
             WHERE
-            tm_ticket.tick_estado = 'Radicado'
-            AND tm_ticket.tick_titulo like IFNULL('%%',tm_ticket.tick_titulo)
+            tm_ticket.tick_titulo like IFNULL('%%',tm_ticket.tick_titulo)
             ORDER BY tm_ticket.tick_id DESC";
         $sql = $conectar->prepare($sql);
 

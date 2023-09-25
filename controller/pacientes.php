@@ -66,6 +66,33 @@ switch ($_GET["op"]) {
         echo json_encode($results);
         break;
 
+    case "listar_filtro":
+        $datos = $pacientes->filtrar_paciente($_POST["modalidad_id"]);
+        $data = array();
+        foreach ($datos as $row) {
+            $sub_array = array();
+            $sub_array[] = $row["paciente_fech_crea"];
+            $sub_array[] = $row["paciente_tipo_id"];
+            $sub_array[] = $row["paciente_num_doc"];
+            $sub_array[] = $row["paciente_nom"];
+            $sub_array[] = $row["paciente_estudio"];
+            $sub_array[] = $row["servicio_nom"];
+            $sub_array[] = $row["empresa_nom"];
+            $sub_array[] = $row["paciente_hiruko_id"];
+            $sub_array[] = $row["paciente_obs"];
+            $sub_array[] = $row["usuario_nombre"];
+            $data[] = $sub_array;
+        }
+
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($results);
+        break;
+
         /* TODO: Listado de pacientes segun formato json para el datatable */
     case "pacientesql":
         $datos = $pacientes->get_pacientes_sql($_POST["tip_id"], $_POST["num_identificacion"]);
@@ -108,6 +135,7 @@ switch ($_GET["op"]) {
             $_POST["tip_id"],
             $_POST["num_identificacion"],
             $_POST["nombre_paciente"],
+            $_POST["modalidad"],
             $_POST["estudio"],
             $_POST["servicio"],
             $_POST["entidad"],

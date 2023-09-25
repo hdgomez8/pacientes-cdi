@@ -35,8 +35,23 @@ if (isset($_SESSION["usu_id"])) {
 				</header>
 
 				<div class="box-typical box-typical-padding">
+					<div class="row">
+						<div class="col-md-4">
+							<select class="select2" id="filtro_modalidad">
+								<option value="">Filtrar por Modalidad</option>
+								<option value="RX">RAYOS X</option>
+								<option value="MR">RESONANCIA</option>
+								<option value="CT">TOMOGRAFIA</option>
+								<option value="MG">MAMOGRAFIA</option>
+								<option value="NM">MEDICINA NUCLEAR</option>
+							</select>
+						</div>
+						<button class="btn" id="btn_aplicar_filtro">Aplicar Filtro</button>
+					</div>
+
 
 					<div class="box-typical box-typical-padding" id="table">
+
 						<table id="ticket_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 							<thead>
 								<tr>
@@ -50,7 +65,7 @@ if (isset($_SESSION["usu_id"])) {
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Hiruko</th>
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Observacion</th>
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Tecnico</th>
-									
+
 								</tr>
 							</thead>
 							<tbody>
