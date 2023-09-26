@@ -6,7 +6,7 @@ return [
     'DB_PASSWORD' => 'Orion1225',
     'DB_DATABASE' => 'pacientes_cdi',
     'APP_DEBUG' => true,
-    'DIRECCION_PROYECTO'=> 'http://192.168.1.128:8088/pacientes-cdi/',
+    'DIRECCION_PROYECTO'=> 'http://192.168.1.194:8080/pacientes-cdi/',
     //Servidor SQL
     'DB_HOST_SQL' => '192.168.1.191',
     'DB_DATABASE_SQL' => 'Asistencial',
