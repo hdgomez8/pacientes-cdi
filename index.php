@@ -13,7 +13,7 @@ if (isset($_POST["enviar"]) and $_POST["enviar"] == "si") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>HelpDesk - Clinica Mar Caribe</title>
+    <title>CDI - Registro Pacientes</title>
 
     <link href="img/favicon.144x144.png" rel="apple-touch-icon" type="image/png" sizes="144x144">
     <link href="img/favicon.114x114.png" rel="apple-touch-icon" type="image/png" sizes="114x114">
@@ -81,7 +81,8 @@ if (isset($_POST["enviar"]) and $_POST["enviar"] == "si") {
                     <div class="form-group">
                         <div class="float-left reset">
                             <select id="btnsoporte" class="form-control">
-                                <option value="usuario">USUARIO</option>
+                                <option value="" disabled>Selecciona</option>
+                                <option value="usuario">CONSULTA</option>
                                 <option value="tecnico">TECNÓLOGO</option>
                                 <option value="admin">ADMIN</option>
                                 <option value="superAdmin">SUPER ADMIN</option>

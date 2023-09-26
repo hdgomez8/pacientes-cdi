@@ -78,6 +78,7 @@ if (isset($_SESSION["usu_id"])) {
 											<option value="CT">TOMOGRAFIA</option>
 											<option value="MG">MAMOGRAFIA</option>
 											<option value="NM">MEDICINA NUCLEAR</option>
+											<option value="US">ECOGRAFIA</option>
 											<!-- Agrega más opciones según tus necesidades -->
 										</select>
 									</div>
