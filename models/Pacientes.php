@@ -85,6 +85,7 @@ class Pacientes extends Conectar
         $tip_id,
         $num_identificacion,
         $nombre_paciente,
+        $modalidad,
         $estudio,
         $servicio,
         $entidad,
@@ -97,23 +98,25 @@ class Pacientes extends Conectar
         $sql = "INSERT INTO tm_pacientes (paciente_tipo_id, 
         paciente_num_doc, 
         paciente_nom,
+        paciente_modalidad,
         paciente_estudio,
         paciente_servicio_id,
         paciente_empresa_id,
         paciente_hiruko_id,
         paciente_obs,
         paciente_usuario_id,
-        paciente_fech_crea) VALUES (?,?,?,?,?,?,?,?,?,now());";
+        paciente_fech_crea) VALUES (?,?,?,?,?,?,?,?,?,?,now());";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $tip_id);
         $sql->bindValue(2, $num_identificacion);
         $sql->bindValue(3, $nombre_paciente);
-        $sql->bindValue(4, $estudio);
-        $sql->bindValue(5, $servicio);
-        $sql->bindValue(6, $entidad);
-        $sql->bindValue(7, $hiruko);
-        $sql->bindValue(8, $observacion);
-        $sql->bindValue(9, $usu_id);
+        $sql->bindValue(4, $modalidad);
+        $sql->bindValue(5, $estudio);
+        $sql->bindValue(6, $servicio);
+        $sql->bindValue(7, $entidad);
+        $sql->bindValue(8, $hiruko);
+        $sql->bindValue(9, $observacion);
+        $sql->bindValue(10, $usu_id);
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
@@ -157,6 +160,35 @@ class Pacientes extends Conectar
         $sql = "SELECT * FROM tm_pacientes WHERE cat_id = ?";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $cat_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+    public function filtrar_paciente($modalidad_id)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT
+        paciente_fech_crea,
+        paciente_tipo_id,
+        paciente_num_doc,
+        paciente_nom,
+        paciente_estudio,
+        tm_servicio.servicio_nom,
+        tm_empresa.empresa_nom,
+        paciente_hiruko_id,
+        paciente_obs,
+        CONCAT(usu_nom, ' ', usu_ape) as usuario_nombre
+        FROM tm_pacientes
+        INNER join tm_servicio on tm_servicio.servicio_id = paciente_servicio_id
+        INNER join tm_empresa on tm_empresa.empresa_id = paciente_empresa_id
+        INNER join tm_usuario on tm_usuario.usu_id = paciente_usuario_id 
+        where tm_pacientes.paciente_modalidad = :modalidad_id";
+        $sql = $conectar->prepare($sql);
+
+        // Vincular el valor de $modalidad_id al marcador de posición :modalidad_id
+        $sql->bindParam(':modalidad_id', $modalidad_id, PDO::PARAM_STR);
+
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }

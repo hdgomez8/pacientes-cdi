@@ -8,7 +8,49 @@ function init() {
     });
 }
 
-$(document).ready(function(){
+function inicializarDataTable() {
+    tabla = $('#ticket_data').dataTable({
+        // Configuración inicial de DataTables aquí
+        "aProcessing": true,
+        "aServerSide": true,
+        dom: 'Bfrtip',
+        "searching": true,
+        lengthChange: false,
+        colReorder: true,
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                orientation: 'landscape', // Configura la orientación como 'landscape'
+                customize: function(doc) {
+                    // Personaliza el documento PDF si es necesario
+                }
+            },
+        ],
+        "ajax": {
+            url: '../../controller/pacientes.php?op=listar_todos',
+            type: "post",
+            dataType: "json",
+            error: function (e) {
+                console.log(e.responseText);
+            }
+        },
+        "ordering": false,
+        "bDestroy": true,
+        "responsive": true,
+        "bInfo": true,
+        "iDisplayLength": 10,
+        "autoWidth": false,
+        "language": {
+            // Configuración de idioma aquí
+        }
+    }).DataTable();
+}
+
+$(document).ready(function () {
 
     /* TODO: Llenar Combo Categoria */
     $.post("../../controller/categoria.php?op=combo", function (data, status) {
@@ -25,60 +67,10 @@ $(document).ready(function(){
         $('#usu_asig').html(data);
     });
 
-        $('#viewuser').hide();
+    $('#viewuser').hide();
 
-        tabla = $('#ticket_data').dataTable({
-            "aProcessing": true,
-            "aServerSide": true,
-            dom: 'Bfrtip',
-            "searching": true,
-            lengthChange: false,
-            colReorder: true,
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5'
-            ],
-            "ajax": {
-                url: '../../controller/pacientes.php?op=listar_todos',
-                type: "post",
-                dataType: "json",
-                error: function (e) {
-                    console.log(e.responseText);
-                }
-            },
-            "ordering": false,
-            "bDestroy": true,
-            "responsive": true,
-            "bInfo": true,
-            "iDisplayLength": 10,
-            "autoWidth": false,
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        }).DataTable();
+    // Inicializa la tabla para mostrar todos los datos
+    inicializarDataTable();
 
 });
 
@@ -121,12 +113,11 @@ function guardar(e) {
             });
 
             /* TODO: Alerta de confirmacion */
-            swal("Asignado Exitosamente","", "success");
+            swal("Asignado Exitosamente", "", "success");
 
             /* TODO: Ocultar Modal */
             $("#modalasignar").modal('hide');
-            /* TODO:Recargar Datatable JS */
-            $('#ticket_data').DataTable().ajax.reload();
+
         }
     });
 }
@@ -150,8 +141,6 @@ function CambiarEstado(tick_id) {
 
                 });
 
-                /* TODO:Recargar datatable js */
-                $('#ticket_data').DataTable().ajax.reload();
 
                 /* TODO: Mensaje de Confirmacion */
                 swal({
@@ -164,117 +153,36 @@ function CambiarEstado(tick_id) {
         });
 }
 
-/* TODO:Filtro avanzado */
-$(document).on("click", "#btnfiltrar", function () {
-    limpiar();
-
-    var tick_titulo = $('#tick_titulo').val();
-    var cat_id = $('#cat_id').val();
-    var prio_id = $('#prio_id').val();
-
-    listardatatable(tick_titulo, cat_id, prio_id);
-
-});
-
-/* TODO: Restaurar Datatable js y limpiar */
-$(document).on("click", "#btntodo", function () {
-    limpiar();
-
-    $('#tick_titulo').val('');
-    $('#cat_id').val('').trigger('change');
-    $('#prio_id').val('').trigger('change');
-
-    listardatatable('', '', '');
+$(document).on("click", "#btn_aplicar_filtro", function () {
+    listardatatable();
 });
 
 /* TODO: Listar datatable con filtro avanzado */
-// function listardatatable(){
-function listardatatable(tick_titulo,  prio_id) {
-    tabla = $('#ticket_data').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-        dom: 'Bfrtip',
-        "searching": true,
-        lengthChange: false,
-        colReorder: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            {
-                extend: 'pdfHtml5',
-                title: 'TablaHorizontal', // Título del archivo PDF
-                orientation: 'landscape',
-                customize: function (doc) {
-                    // Personaliza el documento PDF aquí
-                    // Puedes modificar el diseño para mostrar los datos horizontalmente
-                }
-            }
-        ],
-        "ajax": {
-            url: '../../controller/pacientes.php?op=listar_filtro',
-            type: "post",
-            dataType: "json",
-            data: { tick_titulo: tick_titulo,  prio_id: prio_id },
-            error: function (e) {
-                console.log(this.data);
-                console.log(e.responseText);
-            }
+function listardatatable() {
+    var modalidad_id = $('#filtro_modalidad').val();
+
+    fetch('../../controller/pacientes.php?op=listar_filtro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        "bDestroy": true,
-        "responsive": true,
-        "bInfo": true,
-        "iDisplayLength": 10,
-        "autoWidth": false,
-        "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-        }
-    }).DataTable().ajax.reload();
-}
+        body: 'modalidad_id=' + modalidad_id,
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
 
-/* TODO: Limpiamos restructurando el html del datatable js */
-function limpiar() {
-    $('#table').html(
-        "<table id='ticket_data' class='table table-bordered table-striped table-vcenter js-dataTable-full'>" +
-        "<thead>" +
-        "<tr>" +
-        "<th style='width: 5%;'>Nro.Ticket</th>" +
-        "<th style='width: 15%;'>Categoria</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 30%;'>Titulo</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 5%;'>Estado</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 10%;'>Fecha Creación</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 10%;'>Fecha Asignación</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 10%;'>Fecha Cierre</th>" +
-        "<th class='d-none d-sm-table-cell' style='width: 10%;'>Soporte</th>" +
-        "<th class='text-center' style='width: 5%;'></th>" +
-        "</tr>" +
-        "</thead>" +
-        "<tbody>" +
+        // Limpia los datos actuales de la tabla
+        tabla.clear().draw();
 
-        "</tbody>" +
-        "</table>"
-    );
+        // Agrega los nuevos datos filtrados
+        tabla.rows.add(data.aaData).draw();
+
+    })
+    .catch(function (error) {
+        console.error('Error:', error);
+    });
 }
 
 init();

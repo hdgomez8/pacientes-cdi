@@ -243,7 +243,7 @@ switch ($_GET["op"]) {
 
         /* TODO: Listado de tickets,formato json para Datatable JS, filtro avanzado*/
     case "listar_filtro":
-        $datos = $ticket->filtrar_ticket();
+        $datos = $ticket->filtrar_ticket($_POST["modalidad_id"]);
         $data = array();
         foreach ($datos as $row) {
             $sub_array = array();
