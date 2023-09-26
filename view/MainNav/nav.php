@@ -114,23 +114,9 @@ if ($_SESSION["rol_id"] == 1) {
     <nav class="side-menu">
         <ul class="side-menu-list">
             <li class="blue-dirty">
-                <a href="..\Home\">
-                    <span class="glyphicon glyphicon-home"></span>
-                    <span class="lbl">Inicio</span>
-                </a>
-            </li>
-
-            <li class="blue-dirty">
-                <a href="..\NuevoTicket\">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    <span class="lbl">Nueva solicitud</span>
-                </a>
-            </li>
-
-            <li class="blue-dirty">
-                <a href="..\ConsultarTicket\">
+                <a href="..\ConsultarPacientes\">
                     <span class="glyphicon glyphicon-search"></span>
-                    <span class="lbl">Consultar Solicitud</span>
+                    <span class="lbl">Consultar Pacientes</span>
                 </a>
             </li>
         </ul>
