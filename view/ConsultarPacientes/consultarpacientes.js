@@ -76,7 +76,8 @@ $(document).ready(function () {
 
 /* TODO: Link para poder ver el detalle de ticket en otra ventana */
 function ver(tick_id) {
-    window.open('http://192.168.1.194:8080/pacientes-cdi/view/DetalleTicket/?ID=' + tick_id + '');
+    var dir_proyecto = document.getElementById("dir_proyecto").value;
+    window.open(dir_proyecto + "view/DetalleTicket/?ID=" + tick_id + '');
 }
 
 /* TODO: Mostrar datos antes de asignar */

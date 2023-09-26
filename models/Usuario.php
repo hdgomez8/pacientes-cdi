@@ -27,7 +27,13 @@ class Usuario extends Conectar
                     $_SESSION["usu_nom"] = $resultado["usu_nom"];
                     $_SESSION["usu_ape"] = $resultado["usu_ape"];
                     $_SESSION["rol_id"] = $resultado["rol_id"];
-                    header("Location:" . Conectar::ruta() . "view/NuevoPaciente/");
+                    if ($_SESSION["rol_id"] == 4) {
+                        // Si rol_id es igual a 4, redirige a otro lugar
+                        header("Location:" . Conectar::ruta() . "view/ConsultarPacientes/");
+                    } else {
+                        // En otros casos, redirige a la ruta por defecto para otros roles
+                        header("Location:" . Conectar::ruta() . "view/NuevoPaciente/");
+                    }
                     exit();
                 } else {
                     header("Location:" . Conectar::ruta() . "index.php?m=1");
