@@ -111,42 +111,43 @@ function guardaryeditar(e) {
     return; // Exit the function, don't proceed with saving
   }
 
-    /* TODO: Guardar Pacientes*/
-    $.ajax({
-      url: "../../controller/pacientes.php?op=insert",
-      type: "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (data) {
-        data = JSON.parse(data);
+  /* TODO: Guardar Pacientes*/
+  $.ajax({
+    url: "../../controller/pacientes.php?op=insert",
+    type: "POST",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (data) {
+      data = JSON.parse(data);
 
-        /* TODO: Limpiar campos */
-        $("#tick_titulo").val("");
-        $("#tick_descrip").summernote("reset");
-        $("#num_identificacion").val("");
-        $("#nombre_paciente").val("");
-        $("#modalidad").val("");
-        $("#estudio").val("");
-        $("#servicio").val("");
-        $("#entidad").val("");
-        $("#hiruko").val("");
-        $("#observacion").val("");
+      /* TODO: Limpiar campos */
+      $("#tick_titulo").val("");
+      $("#tick_descrip").summernote("reset");
+      $("#num_identificacion").val("");
+      $("#nombre_paciente").val("");
+      $("#modalidad").val("");
+      $("#estudio").val("");
+      $("#servicio").val("");
+      $("#entidad").val("");
+      $("#hiruko").val("");
+      $("#observacion").val("");
 
-        /* TODO: Alerta de Confirmacion */
-        swal({
-          title: "Paciente Guardado Exitosamente",
-          text: " ",
-          icon: "success"
-        }).then(function (result) {
-          console.log(result); // Print the result in the console
-          if (result) {
-            window.location.href = "http://192.168.1.194:8080/pacientes-cdi/view/NuevoPaciente/";
-          }
-        });
-      },
-    });
-  }
+      /* TODO: Alerta de Confirmacion */
+      swal({
+        title: "Paciente Guardado Exitosamente",
+        text: " ",
+        icon: "success"
+      }).then(function (result) {
+        console.log(result); // Print the result in the console
+        if (result) {
+          var dir_proyecto = document.getElementById("dir_proyecto").value;
+          window.location.href = dir_proyecto + "view/NuevoPaciente/";
+        }
+      });
+    },
+  });
+}
 
 // Obtener los elementos del formulario
 const tipIdElement = document.getElementById("tip_id");
@@ -201,7 +202,7 @@ function realizarBusquedaEstudio() {
   // Verificar si ambos campos están llenos
   if (modalidad !== "") {
     formDataEstudio.append("modalidad", modalidad);
-console.log(formDataEstudio);
+    console.log(formDataEstudio);
 
     /* TODO: Guardar Ticket */
     $.ajax({
@@ -223,10 +224,5 @@ modalidadElement.addEventListener("change", realizarBusquedaEstudio);
 // Agregar un evento para detectar los cambios en los campos
 tipIdElement.addEventListener("change", realizarBusqueda);
 numIdentificacionElement.addEventListener("input", realizarBusqueda);
-
-// Agregar un evento para detectar el clic en el botón de búsqueda (opcional)
-// document
-//   .getElementById("btnBuscar");
-//   .addEventListener("click", realizarBusqueda);
 
 init();

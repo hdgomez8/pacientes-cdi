@@ -25,7 +25,7 @@ function inicializarDataTable() {
                 extend: 'pdfHtml5',
                 text: 'PDF',
                 orientation: 'landscape', // Configura la orientación como 'landscape'
-                customize: function(doc) {
+                customize: function (doc) {
                     // Personaliza el documento PDF si es necesario
                 }
             },
@@ -80,17 +80,6 @@ function ver(tick_id) {
     window.open(dir_proyecto + "view/DetalleTicket/?ID=" + tick_id + '');
 }
 
-/* TODO: Mostrar datos antes de asignar */
-function asignar(tick_id) {
-    $.post("../../controller/pacientes.php?op=mostrar", { tick_id: tick_id }, function (data) {
-        data = JSON.parse(data);
-        $('#tick_id').val(data.tick_id);
-
-        $('#mdltitulo').html('Asignar Responsable');
-        $("#modalasignar").modal('show');
-    });
-}
-
 /* TODO: Guardar asignacion de usuario de soporte */
 function guardar(e) {
     e.preventDefault();
@@ -123,37 +112,6 @@ function guardar(e) {
     });
 }
 
-/* TODO:Reabrir ticket */
-function CambiarEstado(tick_id) {
-    swal({
-        title: "HelpDesk",
-        text: "Esta seguro de Reabrir el Ticket?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonClass: "btn-warning",
-        confirmButtonText: "Si",
-        cancelButtonText: "No",
-        closeOnConfirm: false
-    },
-        function (isConfirm) {
-            if (isConfirm) {
-                /* TODO: Enviar actualizacion de estado */
-                $.post("../../controller/pacientes.php?op=reabrir", { tick_id: tick_id, usu_id: usu_id }, function (data) {
-
-                });
-
-
-                /* TODO: Mensaje de Confirmacion */
-                swal({
-                    title: "HelpDesk!",
-                    text: "Ticket Abierto.",
-                    type: "success",
-                    confirmButtonClass: "btn-success"
-                });
-            }
-        });
-}
-
 $(document).on("click", "#btn_aplicar_filtro", function () {
     listardatatable();
 });
@@ -169,21 +127,28 @@ function listardatatable() {
         },
         body: 'modalidad_id=' + modalidad_id,
     })
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
 
-        // Limpia los datos actuales de la tabla
-        tabla.clear().draw();
+            // Limpia los datos actuales de la tabla
+            tabla.clear().draw();
 
-        // Agrega los nuevos datos filtrados
-        tabla.rows.add(data.aaData).draw();
+            // Agrega los nuevos datos filtrados
+            tabla.rows.add(data.aaData).draw();
 
-    })
-    .catch(function (error) {
-        console.error('Error:', error);
-    });
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+}
+
+/* TODO: Link para poder ver el detalle de ticket en otra ventana */
+function ver(paciente_id) {
+    var dir_proyecto = document.getElementById("dir_proyecto").value;
+    window.location.href =
+        dir_proyecto + "view/DetallePaciente/?ID=" + paciente_id;
 }
 
 init();

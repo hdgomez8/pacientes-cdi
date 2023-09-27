@@ -81,7 +81,7 @@ if (isset($_POST["enviar"]) and $_POST["enviar"] == "si") {
                     <div class="form-group">
                         <div class="float-left reset">
                             <select id="btnsoporte" class="form-control">
-                                <option value="" disabled>Selecciona</option>
+                                <option value="">Selecciona</option>
                                 <option value="usuario">CONSULTA</option>
                                 <option value="tecnico">TECNÓLOGO</option>
                                 <option value="admin">ADMIN</option>
