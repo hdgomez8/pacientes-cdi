@@ -109,6 +109,18 @@ class Usuario extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
+    /* TODO:Todos los registros */
+    public function get_usuario_rol($usu_id)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "select rol_id from tm_usuario where usu_id = ?";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $usu_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
     /* TODO: Obtener registros de usuarios segun rol 2 */
     public function get_usuario_x_rol()
     {

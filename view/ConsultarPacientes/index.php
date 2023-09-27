@@ -57,6 +57,7 @@ if (isset($_SESSION["usu_id"])) {
 						<table id="ticket_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 							<thead>
 								<tr>
+									<th style="width: 10%;">#</th>
 									<th style="width: 10%;">Fecha</th>
 									<th class="d-none d-sm-table-cell" style="width: 5%;">Tipo Doc</th>
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Numero Doc</th>
@@ -67,7 +68,7 @@ if (isset($_SESSION["usu_id"])) {
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Hiruko</th>
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Observacion</th>
 									<th class="d-none d-sm-table-cell" style="width: 10%;">Tecnico</th>
-
+									<th class="d-none d-sm-table-cell" style="width: 10%;">Ver</th>
 								</tr>
 							</thead>
 							<tbody>
