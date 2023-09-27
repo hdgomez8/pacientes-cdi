@@ -3,7 +3,9 @@
 require_once("../config/conexion.php");
 /* TODO:Modelo pacientes */
 require_once("../models/Pacientes.php");
+require_once("../models/Usuario.php");
 $pacientes = new Pacientes();
+$usuario = new Usuario();
 
 /*TODO: opciones del controlador pacientes*/
 switch ($_GET["op"]) {
@@ -21,9 +23,11 @@ switch ($_GET["op"]) {
 
     case "listar_todos":
         $datos = $pacientes->get_pacientes_todos();
+        $rolUsuario = $usuario->get_usuario_rol($_SESSION["usu_id"]);
         $data = array();
         foreach ($datos as $row) {
             $sub_array = array();
+            $sub_array[] = $row["paciente_id"];
             $sub_array[] = $row["paciente_fech_crea"];
             $sub_array[] = $row["paciente_tipo_id"];
             $sub_array[] = $row["paciente_num_doc"];
@@ -34,6 +38,11 @@ switch ($_GET["op"]) {
             $sub_array[] = $row["paciente_hiruko_id"];
             $sub_array[] = $row["paciente_obs"];
             $sub_array[] = $row["usuario_nombre"];
+            if ($rolUsuario == 3) {
+                $sub_array[] = '<button type="button" onClick="ver(' . $row["paciente_id"] . ');"  id="' . $row["paciente_id"] . '" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            }else {
+                $sub_array[] = '<button type="button" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
+            }
             $data[] = $sub_array;
         }
 
@@ -66,6 +75,9 @@ switch ($_GET["op"]) {
         echo json_encode($results);
         break;
 
+    case "updatePaciente":
+        $pacientes->update_paciente($_POST["paciente_id"], $_POST["modalidad"], $_POST["estudio"], $_POST["entidad"]);
+        break;
     case "listar_filtro":
         $datos = $pacientes->filtrar_paciente($_POST["modalidad_id"]);
         $data = array();
@@ -123,6 +135,22 @@ switch ($_GET["op"]) {
             foreach ($datos as $row) {
                 $output["pacientes_id"] = $row["pacientes_id"];
                 $output["pacientes_nom"] = $row["pacientes_nom"];
+            }
+            echo json_encode($output);
+        }
+        break;
+
+    case "mostrarPaciente";
+        $datos = $pacientes->get_paciente_x_id($_POST["paciente_id"]);
+        if (is_array($datos) == true and count($datos) > 0) {
+            foreach ($datos as $row) {
+                $output["paciente_id"] = $row["paciente_id"];
+                $output["paciente_tipo_id"] = $row["paciente_tipo_id"];
+                $output["paciente_num_doc"] = $row["paciente_num_doc"];
+                $output["paciente_nom"] = $row["paciente_nom"];
+                $output["paciente_hiruko_id"] = $row["paciente_hiruko_id"];
+                $output["paciente_obs"] = $row["paciente_obs"];
+                $output["servicio_nom"] = $row["servicio_nom"];
             }
             echo json_encode($output);
         }

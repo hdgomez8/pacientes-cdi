@@ -18,7 +18,8 @@ class Pacientes extends Conectar
     {
         $conectar = parent::conexion();
         parent::set_names();
-        $sql = "SELECT 
+        $sql = "SELECT
+        paciente_id, 
         paciente_fech_crea,
         paciente_tipo_id,
         paciente_num_doc,
@@ -137,6 +138,26 @@ class Pacientes extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
+    /* TODO:Update Registro*/
+    public function update_paciente($paciente_id, $modalidad, $estudio, $entidad)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "UPDATE tm_pacientes set
+                    paciente_modalidad = ?,
+                    paciente_estudio = ?,
+                    paciente_empresa_id = ?
+                    WHERE
+                    paciente_id = ?";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $modalidad);
+        $sql->bindValue(2, $estudio);
+        $sql->bindValue(3, $entidad);
+        $sql->bindValue(4, $paciente_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
     /* TODO:Delete Registro*/
     public function delete_pacientes($cat_id)
     {
@@ -160,6 +181,20 @@ class Pacientes extends Conectar
         $sql = "SELECT * FROM tm_pacientes WHERE cat_id = ?";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $cat_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
+    /* TODO:Registro x id */
+    public function get_paciente_x_id($paciente_id)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "SELECT *,tm_servicio.servicio_nom FROM tm_pacientes 
+        INNER join tm_servicio on tm_servicio.servicio_id = tm_pacientes.paciente_servicio_id 
+        WHERE paciente_id = ?";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $paciente_id);
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }

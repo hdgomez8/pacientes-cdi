@@ -1,5 +1,6 @@
 <?php
 require_once("../../config/conexion.php");
+$dir_proyecto = $settings['DIRECCION_PROYECTO'];
 if (isset($_SESSION["usu_id"])) {
 ?>
 	<!DOCTYPE html>
@@ -25,6 +26,7 @@ if (isset($_SESSION["usu_id"])) {
 						<div class="tbl-row">
 							<div class="tbl-cell">
 								<h3>Ingreso de Paciente</h3>
+								<input type="hidden" id="dir_proyecto" value="<?php echo $dir_proyecto; ?>">
 								<ol class="breadcrumb breadcrumb-simple">
 									<li><a href="../Home/index.php">Inicio</a></li>
 									<li class="active">Ingreso de Paciente</li>
