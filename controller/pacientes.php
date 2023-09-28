@@ -38,11 +38,7 @@ switch ($_GET["op"]) {
             $sub_array[] = $row["paciente_hiruko_id"];
             $sub_array[] = $row["paciente_obs"];
             $sub_array[] = $row["usuario_nombre"];
-            if ($rolUsuario == 3) {
-                $sub_array[] = '<button type="button" onClick="ver(' . $row["paciente_id"] . ');"  id="' . $row["paciente_id"] . '" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            }else {
-                $sub_array[] = '<button type="button" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
-            }
+            $sub_array[] = '<button type="button" onClick="ver(' . $row["paciente_id"] . ');"  id="' . $row["paciente_id"] . '" class="btn btn-inline btn-warning btn-sm ladda-button"><i class="fa fa-edit"></i></button>';
             $data[] = $sub_array;
         }
 
