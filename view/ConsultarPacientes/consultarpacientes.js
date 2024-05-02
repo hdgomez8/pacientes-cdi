@@ -27,6 +27,7 @@ function inicializarDataTable() {
                 orientation: 'landscape', // Configura la orientación como 'landscape'
                 customize: function (doc) {
                     // Personaliza el documento PDF si es necesario
+                    // Personaliza el documento PDF si es necesario
                 }
             },
         ],
